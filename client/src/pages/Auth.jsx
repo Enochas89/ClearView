@@ -6,6 +6,7 @@ export default function Auth() {
   const { login, register } = useAuth();
   const [mode, setMode] = useState("login");
   the [name, setName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
