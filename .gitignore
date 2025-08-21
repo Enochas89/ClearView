@@ -11,3 +11,7 @@ yarn-error.log*
 pnpm-debug.log*
 
 Clearview-2.5/
+
+/package-lock.json
+/Test.txt
+/ClearView/
