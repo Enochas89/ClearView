@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useGanttScale from "../../hooks/useGanttScale";
 
-export default function GanttCanvas({ tasks, scale, onMove }) {
+export default function GanttCanvas({ tasks, scale, onMove, onResize }) {
   const { unit, dateToX, widthFor, snap } = useGanttScale(scale);
   const [drag, setDrag] = useState(null);
   const origin = tasks[0]?.startDate || new Date();
@@ -15,15 +15,15 @@ export default function GanttCanvas({ tasks, scale, onMove }) {
     setDrag({ id: task._id, startX: e.clientX, mode: "resize" });
   };
 
-   const handleMove = (e) => {
+  const handleMove = (e) => {
     if (!drag) return;
     const dx = e.clientX - drag.startX;
     const delta = snap(dx);
     if (delta === 0) return;
     if (drag.mode === "resize") {
-    onResize?.(drag.id, delta);
-    setDrag({ ...drag, startX: e.clientX });
-  } else {
+      onResize?.(drag.id, delta);
+      setDrag({ ...drag, startX: e.clientX });
+    } else {
       onMove(drag.id, delta);
       setDrag({ ...drag, startX: e.clientX });
     }
@@ -46,10 +46,8 @@ export default function GanttCanvas({ tasks, scale, onMove }) {
               key={t._id}
               className="absolute bg-blue-500 text-white text-xs"
               style={{ left: x, top: i * 32, width: w, height: 24 }}
-              onMouseDown={(e) => handleDown(t, e)}
             >
-              {t.title}
-             <div
+              <div
                 className="w-full h-full cursor-move relative"
                 onMouseDown={(e) => handleDown(t, e)}
               >
@@ -58,7 +56,11 @@ export default function GanttCanvas({ tasks, scale, onMove }) {
                   className="absolute top-0 right-0 w-1 h-full cursor-ew-resize bg-blue-700"
                   onMouseDown={(e) => handleResizeDown(t, e)}
                 />
-           </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
