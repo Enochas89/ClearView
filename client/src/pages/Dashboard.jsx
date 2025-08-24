@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
-import { listTasks, moveTask, resizeTask, updateProgress } from "../api/tasks";
+import {
+  listTasks,
+  moveTask,
+  updateTask,
+} from "../api/tasks";
 import GanttToolbar from "../components/gantt/GanttToolbar";
 import GanttCanvas from "../components/gantt/GanttCanvas";
 import TaskList from "../components/gantt/TaskList";
 import TaskEditor from "../components/gantt/TaskEditor";
-
+import TaskCreate from "../components/gantt/TaskCreate";
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [scale, setScale] = useState("week");
@@ -38,27 +42,45 @@ export default function Dashboard() {
   };
 
   const handleSave = async (form) => {
-    const id = selected;
-    const res = await resizeTask(id, {
+   if (!selected) return;
+    const res = await updateTask(selected, {
+      title: form.title,
+      startDate: form.startDate,
       endDate: form.endDate,
       durationDays: form.durationDays,
+       progress: form.progress,
     });
-    await updateProgress(id, form.progress);
-    setTasks((ts) => ts.map((t) => (t._id === id ? res.data : t)));
+   setTasks((ts) => ts.map((t) => (t._id === selected ? res.data : t)));
+  };
+
+  const handleCreated = (task) => {
+    setTasks((ts) => [...ts, task]);
+    setSelected(task._id);
   };
 
   return (
     <div className="flex h-full">
-      <div className="w-1/4 border-r overflow-y-auto">
-        <TaskList tasks={tasks} selected={selected} onSelect={setSelected} />
-        <TaskEditor
-          task={tasks.find((t) => t._id === selected)}
-          onSave={handleSave}
+       <div className="w-1/4 border-r overflow-y-auto flex flex-col">
+        <TaskCreate onCreated={handleCreated} />
+        <TaskList
+          tasks={tasks}
+          selected={selected}
+          onSelect={setSelected}
         />
       </div>
       <div className="flex-1 flex flex-col">
-        <GanttToolbar scale={scale} setScale={setScale} onToday={() => {}} />
-        <GanttCanvas tasks={tasks} scale={scale} onMove={handleMove} />
+         <div className="flex-1 overflow-y-auto border-b">
+          <TaskEditor
+            task={tasks.find((t) => t._id === selected)}
+            onSave={handleSave}
+          />
+        </div>
+        <div className="flex-1 flex flex-col">
+          <GanttToolbar scale={scale} setScale={setScale} onToday={() => {}} />
+          <div className="flex-1">
+            <GanttCanvas tasks={tasks} scale={scale} onMove={handleMove} />
+          </div>
+        </div>
       </div>
     </div>
   );

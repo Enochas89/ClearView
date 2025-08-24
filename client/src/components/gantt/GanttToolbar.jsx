@@ -12,8 +12,7 @@ export default function GanttToolbar({ scale, setScale, onToday }) {
         onClick={() => setScale("week")}
       >
         Week
-      </button
-      >
+      </button>
       <button
         className={scale === "month" ? "font-bold" : ""}
         onClick={() => setScale("month")}

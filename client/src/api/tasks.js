@@ -12,3 +12,4 @@ export const resizeTask = (id, data) =>
   api.patch(`/api/tasks/${id}/resize`, data);
 export const updateProgress = (id, progress) =>
   api.patch(`/api/tasks/${id}/progress`, { progress });
+export const updateTask = (id, data) => api.patch(`/api/tasks/${id}`, data);

@@ -16,6 +16,29 @@ export async function create(req, res) {
   const t = await Task.create(req.body);
   res.json(t);
 }
+export async function update(req, res) {
+  const t = await Task.findById(req.params.id);
+  if (!t) return res.sendStatus(404);
+  const fields = [
+    "title",
+    "startDate",
+    "endDate",
+    "durationDays",
+    "progress",
+    "status",
+    "assignee",
+    "barColor",
+    "dependsOn",
+    "priority",
+    "tags",
+  ];
+  for (const f of fields) {
+    if (req.body[f] !== undefined) t[f] = req.body[f];
+  }
+  await t.save();
+  res.json(t);
+}
+
 
 export async function move(req, res) {
   const { deltaDays } = req.body;
