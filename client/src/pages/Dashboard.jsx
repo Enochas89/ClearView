@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   listTasks,
   moveTask,
@@ -8,8 +8,7 @@ import GanttToolbar from "../components/gantt/GanttToolbar";
 import GanttCanvas from "../components/gantt/GanttCanvas";
 import TaskList from "../components/gantt/TaskList";
 import TaskEditor from "../components/gantt/TaskEditor";
-import TaskCreate from "../components/gantt/TaskCreate";
-export default function Dashboard() {
+export default function Dashboard({ onRegisterCreate }) {
   const [tasks, setTasks] = useState([]);
   const [scale, setScale] = useState("week");
   const [selected, setSelected] = useState(null);
@@ -54,14 +53,17 @@ export default function Dashboard() {
   };
 
   const handleCreated = (task) => {
-    setTasks((ts) => [...ts, task]);
+      setTasks((ts) => [...ts, task]);
     setSelected(task._id);
-  };
+    }, []);
+
+  useEffect(() => {
+    onRegisterCreate?.(handleCreated);
+  }, [onRegisterCreate, handleCreated]);
 
   return (
     <div className="flex h-full">
-       <div className="w-1/4 border-r overflow-y-auto flex flex-col">
-        <TaskCreate onCreated={handleCreated} />
+        <div className="w-1/4 border-r overflow-y-auto">
         <TaskList
           tasks={tasks}
           selected={selected}

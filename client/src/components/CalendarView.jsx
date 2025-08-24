@@ -85,7 +85,7 @@ export default function CalendarView({ projectId }) {
   }
 
   return (
-    <div className="h-[70vh] flex flex-col">
+    <div className="h-full flex flex-col">
       {/* Toolbar */}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">

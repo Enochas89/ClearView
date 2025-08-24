@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState, useRef } from "react"
 import LeftPanel from "./components/LeftPanel.jsx"
+import Dashboard from "./pages/Dashboard.jsx"
 import Dashboard from "./pages/Dashboard.jsx"
 import ProjectCreate from "./components/ProjectCreate.jsx"
 import { listProjects } from "./api/projects"
@@ -26,6 +27,7 @@ export default function App() {
   const [selectedProjectId, setSelectedProjectId] = useState(null)
   const [error, setError] = useState("")
   const [showCreate, setShowCreate] = useState(false)
+  const taskCreateRef = useRef(null)
 
   const selectedProject = useMemo(
     () => projects.find(p => p._id === selectedProjectId) || null,
@@ -85,14 +87,22 @@ export default function App() {
               selectedProjectId={selectedProjectId}
               onSelectProject={setSelectedProjectId}
               onOpenCreate={() => setShowCreate(true)}
+              onTaskCreated={(task) => taskCreateRef.current?.(task)}
             />
           </aside>
 
           <section className="rounded-xl border bg-white p-3 overflow-hidden">
             {selectedProject && <ProjectHeader project={selectedProject} />}
             {selectedProjectId ? (
-              <Dashboard />
-            ) : (
+              <div className="flex flex-col h-[70vh] gap-4">
+                <div className="flex-1 overflow-hidden">
+                  <CalendarView projectId={selectedProjectId} />
+                </div>
+                <div className="flex-1 min-h-0 overflow-hidden">
+                  <Dashboard onRegisterCreate={(fn) => { taskCreateRef.current = fn }} />
+                </div>
+              </div>
+             ) : (
               <div className="text-sm text-slate-500 p-2">
                 Create or select a project to begin.
               </div>

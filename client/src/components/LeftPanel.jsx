@@ -1,4 +1,6 @@
-export default function LeftPanel({ projects, selectedProjectId, onSelectProject, onOpenCreate }) {
+import TaskCreate from "./gantt/TaskCreate.jsx";
+
+export default function LeftPanel({ projects, selectedProjectId, onSelectProject, onOpenCreate, onTaskCreated }) {
   return (
     <div className="space-y-4">
       <div>
@@ -19,6 +21,8 @@ export default function LeftPanel({ projects, selectedProjectId, onSelectProject
       >
         New Project
       </button>
+
+      <TaskCreate onCreated={onTaskCreated} />
 
       <div className="text-xs text-slate-500">
         Tips:
