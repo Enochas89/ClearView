@@ -5,7 +5,7 @@ import { connectDB } from "./config/db.js";
 import { registerSockets } from "./sockets/index.js";
 import app from "./app.js";
 
-dotenv.config()
+dotenv.config();
 
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
