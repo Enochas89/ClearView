@@ -94,7 +94,7 @@ export default function App() {
           <section className="rounded-xl border bg-white p-3 overflow-hidden">
             {selectedProject && <ProjectHeader project={selectedProject} />}
             {selectedProjectId ? (
-              <div className="flex flex-col h-[70vh] gap-4">
+              <div className="flex flex-row h-[70vh] gap-4">
                 <div className="flex-1 overflow-hidden">
                   <CalendarView projectId={selectedProjectId} />
                 </div>
@@ -102,7 +102,7 @@ export default function App() {
                   <Dashboard onRegisterCreate={(fn) => { taskCreateRef.current = fn }} />
                 </div>
               </div>
-             ) : (
+           ) : (
               <div className="text-sm text-slate-500 p-2">
                 Create or select a project to begin.
               </div>

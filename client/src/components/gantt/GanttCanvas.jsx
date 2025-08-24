@@ -7,14 +7,26 @@ export default function GanttCanvas({ tasks, scale, onMove }) {
   const origin = tasks[0]?.startDate || new Date();
 
   const handleDown = (task, e) => {
-    setDrag({ id: task._id, startX: e.clientX });
+    setDrag({ id: task._id, startX: e.clientX, mode: "move" });
   };
 
-  const handleMove = (e) => {
+  const handleResizeDown = (task, e) => {
+    e.stopPropagation();
+    setDrag({ id: task._id, startX: e.clientX, mode: "resize" });
+  };
+
+   const handleMove = (e) => {
     if (!drag) return;
     const dx = e.clientX - drag.startX;
     const delta = snap(dx);
-    onMove(drag.id, delta);
+    if (delta === 0) return;
+    if (drag.mode === "resize") {
+    onResize?.(drag.id, delta);
+    setDrag({ ...drag, startX: e.clientX });
+  } else {
+      onMove(drag.id, delta);
+      setDrag({ ...drag, startX: e.clientX });
+    }
   };
 
   const handleUp = () => setDrag(null);
@@ -32,15 +44,21 @@ export default function GanttCanvas({ tasks, scale, onMove }) {
           return (
             <div
               key={t._id}
-              className="absolute bg-blue-500 text-white text-xs cursor-move"
+              className="absolute bg-blue-500 text-white text-xs"
               style={{ left: x, top: i * 32, width: w, height: 24 }}
               onMouseDown={(e) => handleDown(t, e)}
             >
               {t.title}
-            </div>
-          );
-        })}
-      </div>
+             <div
+                className="w-full h-full cursor-move relative"
+                onMouseDown={(e) => handleDown(t, e)}
+              >
+                {t.title}
+                <div
+                  className="absolute top-0 right-0 w-1 h-full cursor-ew-resize bg-blue-700"
+                  onMouseDown={(e) => handleResizeDown(t, e)}
+                />
+           </div>
     </div>
   );
 }
