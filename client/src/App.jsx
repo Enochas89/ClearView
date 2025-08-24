@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import LeftPanel from "./components/LeftPanel.jsx"
-import CalendarView from "./components/CalendarView.jsx"
+import Dashboard from "./pages/Dashboard.jsx"
 import ProjectCreate from "./components/ProjectCreate.jsx"
 import { listProjects } from "./api/projects"
 
@@ -90,10 +90,13 @@ export default function App() {
 
           <section className="rounded-xl border bg-white p-3 overflow-hidden">
             {selectedProject && <ProjectHeader project={selectedProject} />}
-            {selectedProjectId
-              ? <CalendarView projectId={selectedProjectId} />
-              : <div className="text-sm text-slate-500 p-2">Create or select a project to begin.</div>
-            }
+            {selectedProjectId ? (
+              <Dashboard />
+            ) : (
+              <div className="text-sm text-slate-500 p-2">
+                Create or select a project to begin.
+              </div>
+            )}
           </section>
         </div>
       </main>
