@@ -52,8 +52,8 @@ export default function Dashboard({ onRegisterCreate }) {
    setTasks((ts) => ts.map((t) => (t._id === selected ? res.data : t)));
   };
 
-  const handleCreated = (task) => {
-      setTasks((ts) => [...ts, task]);
+  const handleCreated = useCallback((task) => {
+    setTasks((ts) => [...ts, task]);
     setSelected(task._id);
     }, []);
 

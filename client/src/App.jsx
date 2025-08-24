@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, useRef } from "react"
 import LeftPanel from "./components/LeftPanel.jsx"
 import Dashboard from "./pages/Dashboard.jsx"
-import Dashboard from "./pages/Dashboard.jsx"
+import CalendarView from "./components/CalendarView.jsx"
 import ProjectCreate from "./components/ProjectCreate.jsx"
 import { listProjects } from "./api/projects"
 
