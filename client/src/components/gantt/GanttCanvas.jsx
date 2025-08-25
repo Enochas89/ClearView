@@ -59,7 +59,7 @@ export default function GanttCanvas({ tasks, scale, onMove, onResize }) {
               </div>
             </div>
           );
-        })}
+        }}
       </div>
     </div>
   );
