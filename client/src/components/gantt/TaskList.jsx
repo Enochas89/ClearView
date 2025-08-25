@@ -74,7 +74,7 @@ export default function TaskList({ tasks, selected, onSelect }) {
             </div>
           ))}
         </div>
-      ))}
+      ))
     </div>
   );
 }
