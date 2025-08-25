@@ -43,6 +43,7 @@ export default function GanttCanvas({ tasks, scale, onMove, onResize, onProgress
     const delta = snap(dx);
     if (delta === 0) return;
     if (drag.mode === "resize") {
+    
       onResize?.(drag.id, delta);
       setDrag({ ...drag, startX: e.clientX });
     } else {
